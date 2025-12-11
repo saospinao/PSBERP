@@ -1,0 +1,8 @@
+[submodule "apps/sales-service"]
+	path = apps/sales-service
+	url = https://github.com/SiesaTeams/POC-Business-Sales-Services.git
+	branch = main
+[submodule "apps/inventory-service"]
+	path = apps/inventory-service
+	url = https://github.com/SiesaTeams/POC-Business-Inventory-Service.git
+	branch = main
