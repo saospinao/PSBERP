@@ -1,64 +1,66 @@
-# Manejo de sesesion en Next.Js
 
-## Resumen Ejecutivo: Modelo de Sesiones para el ERP
+---
 
-El modelo de sesiones implementado utilizará una combinación de **Tokens Web JSON (JWT)**, **Tokens de Refresco (Refresh Tokens)** y un **Almacenamiento Centralizado (Redis)** para garantizar la seguridad, el estado persistente y la capacidad de revocación instantánea.
+## Resumen de Documentación Clave del Proyecto (Carácter Informativo)
 
-### Componentes Clave de la Arquitectura
+Este apartado ofrece una visión general de los documentos más importantes del repositorio, con el objetivo de socializar las tecnologías, la estructura y las convenciones del nuevo proyecto.
 
-| Componente | Uso Principal | Ubicación y Seguridad | Vida Útil (Ej.) |
-| :--- | :--- | :--- | :--- |
-| **Access Token (JWT)** | Autorización rápida en cada solicitud (microservicios). | Enviado en el **cuerpo de la respuesta** (Header `Authorization`). | **5 - 15 minutos** (Corta). |
-| **Refresh Token** | Obtener nuevos Access Tokens sin forzar el re-login. | Almacenado en una **Cookie HttpOnly** (Protección contra XSS). | **7 - 30 días** (Larga). |
-| **Session Store (Redis)** | Almacenar Refresh Tokens válidos para **revocación instantánea** y estado centralizado. | Backend. | Hasta la expiración o revocación. |
-| **Modelo de Autorización** | **RBAC (Role-Based Access Control)**. Los permisos viajan dentro del JWT para validación rápida. | Backend (Generación), JWT (Payload), Backend (Validación final). | N/A |
+### 📄 [ESTRUCTURA_PROYECTO.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/ESTRUCTURA_PROYECTO.md)
+> Este documento describe una estructura de proyecto integral para un microservicio, enfatizando un enfoque de Arquitectura Limpia con .NET 8, PostgreSQL y un frontend Next.js/React/TailwindCSS.
+>
+> **Componentes Clave y Estructura:**
+>
+> 1.  **Monorepo (`/microservicio-nombre/`):** Contiene todo lo necesario para un microservicio, incluyendo `backend`, `frontend`, `infra`, `.github` (CI/CD), `docs` y `bmad` (artefactos aislados del método BMAD).
+> 2.  **Backend (.NET 8):** Sigue la Arquitectura Limpia con capas distintas: `Api`, `Application`, `Domain`, `Infrastructure`, `CrossCutting` y `tests`.
+> 3.  **Frontend (Next.js 14, React, TailwindCSS):** Un microfrontend que consume las APIs del backend.
+> 4.  **Infraestructura (`infra/`):** Incluye `terraform` (IaC), `helm` (Kubernetes manifests), `dapr/components` y `docker` (local dev).
+> 5.  **CI/CD (`.github/workflows/`):** Acciones de GitHub para automatizar build, test y deploy.
+> 6.  **Documentación (`docs/`):** Arquitectura, guías de configuración local, etc.
+> 7.  **BMAD (`bmad/`):** Artefactos aislados del método BMAD.
+>
+> El documento proporciona descripciones detalladas, ejemplos de código y referencias, junto con un checklist de archivos mínimos y ejemplos prácticos para ejecutar localmente.
 
-### Flujo de Autenticación y Sesiones
+### 📄 [general-naming-conventions.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/general-naming-conventions.md)
+> Este documento describe un conjunto integral de convenciones de nomenclatura para un entorno tecnológico full-stack que utiliza C#, PostgreSQL y TypeScript. El principio fundamental es utilizar el estilo de nomenclatura idiomático de cada lenguaje y automatizar el mapeo entre ellos.
+>
+> **Resumen de Convenciones por Capa:**
+>
+> *   **C# (Backend):** `PascalCase` para la mayoría de los elementos, `UPPER_SNAKE_CASE` para constantes. Acrónimos en mayúsculas completas dentro de `PascalCase`.
+> *   **PostgreSQL (Base de datos):** `snake_case` para esquemas, tablas, columnas, índices y restricciones. Claves primarias `id` e identificadores de negocio `code`.
+> *   **TypeScript (Frontend):** `PascalCase` para interfaces/tipos/componentes, `camelCase` para propiedades/funciones/variables, `UPPER_SNAKE_CASE` para constantes.
+> *   **API y JSON:** URLs de endpoints en `kebab-case`, parámetros de consulta y claves JSON en `camelCase`.
+> *   **Mapeo con EF Core:** Uso de `SnakeCaseNamingConvention` para traducir automáticamente propiedades C# `PascalCase` a columnas PostgreSQL `snake_case`.
+> *   **Tablas de Proyección:** Nomenclatura específica con prefijo de 4 letras del servicio de origen y sufijo `_prj` para datos entre microservicios.
+>
+> El documento también proporciona un checklist de implementación, configuraciones de herramientas (EditorConfig, ESLint) y un historial detallado de cambios.
 
-El proceso se divide en cuatro pasos cruciales:
+### 📄 [SIESA-UI-KIT.MD](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/SIESA-UI-KIT.MD)
+> Este documento describe el "Siesa UI Kit", un conjunto de componentes de interfaz de usuario establecido para el proyecto. Se especifica la instalación (`npm -i siesa-ui-kit`) y las tecnologías clave utilizadas, que incluyen React 19 como framework UI, TypeScript 5 para tipado estático, Tailwind CSS 3.4 para estilos, Storybook 10 para documentación de componentes y Vite 7 como herramienta de construcción.
 
-#### 1. Login y Generación
-* El servidor genera un **JWT de Acceso** y un **Refresh Token**.
-* El JWT se envía en la respuesta para uso inmediato del frontend.
-* El Refresh Token se coloca en una **Cookie HttpOnly y Secure**.
-* El Refresh Token se registra en **Redis** junto con el `userId`, IP y `userAgent` para control de seguridad y revocación.
+### 📄 [MANEJODESESSION.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/MANEJODESESSION.md)
+> Este documento detalla el modelo de manejo de sesiones para el ERP, utilizando una combinación de **JSON Web Tokens (JWT)** para *Access Tokens*, *Refresh Tokens* almacenados en **Cookies HttpOnly**, y un **Almacenamiento Centralizado (Redis)** para gestionar la persistencia y revocación instantánea de sesiones. La arquitectura incluye un **flujo de autenticación** (login, validación con middleware en Next.js, refresco de token y logout con revocación en Redis), y mecanismos de **seguridad y auditoría**. Estos últimos abarcan control de acceso basado en roles (**RBAC**), revocación instantánea de tokens a través de Redis, registro de acciones sensibles en `audit_logs`, y medidas de *hardening* adicional (Cookies SameSite=Strict, Rate Limiting, HSTS, verificación de IP/UserAgent). Finalmente, se especifica la **sincronización del estado en el frontend** con Next.js/React utilizando React Query y Zustand/Context.
 
-#### 2. Validación (Middleware)
-* En Next.js (`/middleware.ts`), se valida el **JWT de Acceso** en cada ruta protegida.
-* Si el JWT es válido, se permite el acceso. 
+### 📄 [docs/prd.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/POC-Business-Parent-Repo-main/docs/prd.md)
+> Este documento es el Documento de Requisitos de Producto (PRD) para el ERP de Siesa Business, enfocado en el lanzamiento de un Producto Mínimo Viable (MVP) en 3 meses para validar los flujos de compra y venta. El contexto es resolver la ineficiencia operacional de PYMES con sistemas fragmentados. El documento detalla requisitos funcionales (gestión de usuarios, clientes, proveedores, productos, órdenes de venta y compra, gestión de órdenes) y no funcionales (usabilidad, rendimiento, seguridad, escalabilidad). También establece objetivos de diseño de interfaz de usuario (experiencia limpia, paradigmas de interacción, pantallas clave, accesibilidad WCAG AA, branding Siesa, diseño web responsivo). Las asunciones técnicas clave incluyen una estructura de monorepo, arquitectura de microservicios, pruebas unitarias, de integración y E2E, backend en C#/.NET 8, UI con Shadcn UI, PostgreSQL, despliegue en Google Cloud Platform (GCP) con GKE y CI/CD. Se detallan tres épicas principales: Fundación y Servicios Core, Flujo de Compra End-to-End, y Flujo de Venta End-to-End, con sus historias y criterios de aceptación. Finalmente, incluye un informe de evaluación que indica que el PRD está listo para la fase de arquitectura, con recomendaciones para añadir secciones explícitas de estrategia de datos y operaciones.
 
-#### 3. Refresco (Mantenimiento de Sesión)
-* Si el JWT expira, el frontend llama al endpoint `/api/auth/refresh`.
-* El backend extrae el **Refresh Token** de la cookie HttpOnly, lo valida contra Redis y, si es correcto, emite un **nuevo JWT de Acceso** al cliente.
+### 📄 [docs/brief.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/POC-Business-Parent-Repo-main/docs/brief.md)
+> Este documento es un "Project Brief" para el ERP de Siesa Business, un sistema de software integral diseñado para centralizar y automatizar procesos de negocio. Aborda la ineficiencia operacional, la fragmentación de datos y la falta de visibilidad en PYMES. La solución propuesta es un ERP modular y nativo de la nube con arquitectura modular, diseño centrado en el usuario y una API extensible. Los usuarios objetivo son PYMES (50-500 empleados) y gerentes de departamento.
+>
+> Los objetivos empresariales incluyen lanzar un MVP en 3 meses, adquirir 50 clientes en 12 meses y reducir la sobrecarga administrativa en un 20%. El MVP se centrará en módulos mínimos de Ventas y Compras, gestión de usuarios y un panel de control básico; excluyendo finanzas completas, RRHH, inventario avanzado y BI. La visión post-MVP contempla módulos de RRHH, inventario avanzado y reportes mejorados, con una visión a largo plazo de ser una solución líder con IA.
+>
+> Las consideraciones técnicas incluyen plataformas web responsive, rendimiento, React/Shadcn UI para frontend, .NET 8 con C# para backend, PostgreSQL, GCP/GKE para hosting y una arquitectura de microservicios con monorepo. Se mencionan riesgos (plazo agresivo, adopción del mercado, integración futura) y preguntas abiertas. Se enfatiza la necesidad de validación de la investigación de usuarios y el análisis competitivo antes de la fase de arquitectura.
 
-#### 4. Logout y Revocación
-* Al hacer logout, el backend **elimina el Refresh Token de Redis** y borra la cookie HttpOnly. Esto garantiza el cierre de sesión inmediato.
+### 📄 [ESTRUCTURA DE CARPETAS v2.md](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/ESTRUCTURA%20DE%20CARPETAS%20v2.md)
+> Este documento describe una estructura de monorepo detallada, diseñada para organizar microservicios, microfrontends, infraestructura y recursos compartidos. El objetivo principal es mejorar la productividad mediante el versionamiento único, la visibilidad centralizada, la reutilización de plantillas y pipelines uniformes.
+>
+> La estructura se divide en:
+> 1.  **`/platform/`**: Piezas reutilizables y configuraciones de plataforma (plantillas, flujos de trabajo con Google Cloud Workflows, malla de servicios con Anthos Service Mesh, observabilidad con OpenTelemetry, Prometheus y Grafana, documentación para ingenieros de plataforma).
+> 2.  **`/services/`**: Agrupa microservicios independientes, cada uno con su backend (.NET Clean Architecture, adaptadores Pub/Sub/Workflows, OpenTelemetry), microfrontend (Next.js + TailwindCSS) e infraestructura específica.
+> 3.  **`/frontends/`**: Portales compartidos que integran microfrontends.
+> 4.  **`/infra/`**: Infraestructura global del monorepo (Terraform para GCP, Helm charts, manifiestos K8s base, Docker para dev local).
+> 5.  **`.github/workflows/`**: Pipelines CI/CD para GitHub Actions.
+> 6.  **`docs/`**: Documentación general del proyecto.
+> 7.  **`bmad/`**: Artefactos del método BMAD.
 
-
-### Seguridad y Auditoría
-
-La arquitectura está diseñada con los siguientes mecanismos de seguridad y control:
-
-#### 1. Gestión de Permisos (RBAC)
-* El ERP define un **árbol de permisos** (Ej: `inventario.productos.ver`).
-* Los roles (`admin`, `inventarios`) se asignan a los permisos.
-* Los permisos se incrustan en el **JWT** para una verificación de acceso eficiente en los *Route Handlers* del backend.
-
-#### 2. Revocación Instantánea
-* La clave para el control de sesiones es **Redis**. Si un usuario es bloqueado o se detecta actividad sospechosa, el administrador puede **invalidar (eliminar)** el Refresh Token de Redis, denegando el acceso inmediatamente.
-
-#### 3. **Auditoría** (Obligatorio para ERP)
-* Se implementará una tabla (`audit_logs`) para registrar **todas las acciones sensibles** (inicios de sesión, intentos fallidos, crear/modificar/eliminar registros, cambios de roles/permisos).
-
-#### 4. **Hardening Adicional**
-* Se aplicarán medidas como **Cookies SameSite=Strict**, **Rate Limiting** para el login, **HSTS** y la verificación opcional de **IP/UserAgent** al refrescar el token.
-
-
-### 🌐 Sincronización de Estado en Frontend (Next.js/React)
-
-Para manejar el estado del usuario (roles, permisos, nombre) en el cliente:
-
-* Se usará **React Query** para cargar el estado del usuario de forma asincrónica desde el endpoint `/api/auth/me`.
-* Se usará **Zustand** o **Context** para mantener el estado global básico del usuario.
-* El **Middleware de Next.js** garantiza que el usuario esté autenticado *antes* de cargar cualquier página privada.
-
+### 📄 [README.md (POC-Business-Parent-Repo-main)](/mnt/c/Users/saospinao/Documents/Proyecto%20SIesa%20Bussines%20EPR/POC-Business-Parent-Repo-main/README.md)
+> Este documento es un repositorio de demostración que ilustra una "Arquitectura Limpia + Microservicios", alineada con los patrones de arquitectura definidos en `.bmad-core/data/architecture-patterns.md`. Contiene dos microservicios mínimos en .NET 10 con Minimal API, `sales-service` y `inventory-service`, cada uno estructurado con las capas de Domain, Application, Infrastructure y API. El documento también proporciona instrucciones rápidas para inicializar submódulos Git y levantar cada microservicio localmente.
