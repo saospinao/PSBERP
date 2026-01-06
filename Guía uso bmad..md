@@ -3,7 +3,7 @@
 # *Instalación*
 
 ```zsh
-npm i siesa-agents
+npx siesa-agents
 ```
 
 El paquete instala las siguientes carpetas en tu directorio actual:
@@ -12,6 +12,14 @@ El paquete instala las siguientes carpetas en tu directorio actual:
 - **`.vscode/`** - Configuración de Visual Studio Code
 - **`.github/`** - Configuración de GitHub Actions y workflows
 - **`.claude/`** - Configuración de Claude Code Commands y workflows
+
+### Estructura de carpetas recomendada.
+
+Al crear las carpetas, se debe crear una carpeta apps, también se deben contextualizar a la IA sobre esa carpeta.
+
+![[Pasted image 20260102094852.png]]
+
+>*Nota:* También se debe contextualizar a la IA sobre los archivos package-lock.json y package.json que debe tener en cuenta son los ubicados dentro de la carpeta apps donde tengas un projecto que los requiera, esto para evitar que instale dependencias en la raiz donde bmad genera sus archivos.
 
 ---
 ## 🤖 Lista de agentes
@@ -39,7 +47,7 @@ El paquete instala las siguientes carpetas en tu directorio actual:
 | `*TEST-DESIGN`  | Define cómo se probará la tarea antes de programarla.                   | QA             |
 | `*DEVELOP`      | Ejecución de código basada en el contexto de la tarea.                  | DEV            |
 | `*REVIEW`       | Validación final de que el desarrollo cumple con el diseño.             | QA             |
- *NOTA:*  Los comandos con asterisco (`*`) suelen ser disparadores de automatizaciones o plantillas en bmad.
+ >*Nota:*  Los comandos con asterisco (`*`) suelen ser disparadores de automatizaciones o plantillas en bmad.
 
 ---
 
@@ -47,11 +55,13 @@ El paquete instala las siguientes carpetas en tu directorio actual:
 
 En esta etapa se sientan las bases del proyecto. El objetivo es transformar una necesidad de negocio en una estructura técnica sólida.
 
-| Rol | Acción / Comando | Descripción |
-| --- | --- | --- |
-| **Analista** | `BRIEF` | El punto de partida. Se definen los objetivos generales y el alcance del proyecto. |
-| **PM** | `*CREATE-PRD` | Genera el Documento de Requerimientos del Producto (PRD) detallando el "qué" y el "por qué". |
-| **Arquitecto** | `*CREATE-FULL-STACK-ARCHITECTURE` | Define la estructura técnica, stack, bases de datos y flujo de datos. |
+| Rol            | Acción / Comando                  | Descripción                                                                                  |
+| -------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Analista**   | `BRIEF`                           | El punto de partida. Se definen los objetivos generales y el alcance del proyecto.           |
+| **PM**         | `*CREATE-PRD`                     | Genera el Documento de Requerimientos del Producto (PRD) detallando el "qué" y el "por qué". |
+| **Arquitecto** | `*CREATE-FULL-STACK-ARCHITECTURE` | Define la estructura técnica, stack, bases de datos y flujo de datos.                        |
+
+>Nota: El brief no tiene ninguna información técnica, al momento de crear el prd es donde se contextualiza para que después el arquitecto continúe con la definición.
 
 ---
 
