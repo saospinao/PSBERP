@@ -55,11 +55,11 @@ Al crear las carpetas, se debe crear una carpeta apps, también se deben context
 
 En esta etapa se sientan las bases del proyecto. El objetivo es transformar una necesidad de negocio en una estructura técnica sólida.
 
-| Rol            | Acción / Comando                  | Descripción                                                                                  |
-| -------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
-| **Analista**   | `BRIEF`                           | El punto de partida. Se definen los objetivos generales y el alcance del proyecto.           |
-| **PM**         | `*CREATE-PRD`                     | Genera el Documento de Requerimientos del Producto (PRD) detallando el "qué" y el "por qué". |
-| **Arquitecto** | `*CREATE-FULL-STACK-ARCHITECTURE` | Define la estructura técnica, stack, bases de datos y flujo de datos.                        |
+| Rol            | Acción / Comando                  | Descripción                                                                                                        |
+| -------------- | --------------------------------- | --------------------------------------------------------------------------------------------                       |
+| **Analista**   | `BRIEF`                           | El punto de partida. Se definen los objetivos generales y el alcance del proyecto definiendo "qué" y el "por qué". |
+| **PM**         | `*CREATE-PRD`                     | Genera el Documento de Requerimientos del Producto (PRD) detallando el "como" y el Stack Tecnológico.              |
+| **Arquitecto** | `*CREATE-FULL-STACK-ARCHITECTURE` | Define la estructura técnica, stack, bases de datos y flujo de datos.                                              |
 
 >Nota: El brief no tiene ninguna información técnica, al momento de crear el prd es donde se contextualiza para que después el arquitecto continúe con la definición.
 
@@ -94,13 +94,13 @@ Aquí es donde el equipo ejecuta sobre cada **#STORY** individual.
 * **QA:** `*RISK-PROFILE #STORY` -> Identifica posibles puntos ciegos o riesgos técnicos.
 * **QA:** `*TEST-DESIGN #STORY` -> Crea el plan de pruebas antes de que se escriba una sola línea de código.
 * **PO:** `*VALIDATE-STORY-DRAFT #STORY` -> El PO da el visto bueno final al diseño de la tarea.
-* **Manual:** Mover la tarea a la columna **APROBADO**.
+* **Manual:** Editar el estado de la historia a **APROBADO**.
 
 ### B. Ejecución y Cierre
 
 * **DEV:** `*DEVELOP #STORY` -> El desarrollador ejecuta la lógica basada en el PRD y la Arquitectura fragmentada.
 * **QA:** `*REVIEW #STORY` -> Revisión de calidad para asegurar que lo desarrollado cumple con el diseño de pruebas previo.
-* **Manual:** Mover la tarea a **DONE**.
+* **Manual:** Editar el estado de la historia a **DONE**.
 
 ---
 
