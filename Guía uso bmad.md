@@ -98,7 +98,7 @@ Aquí es donde el equipo ejecuta sobre cada **#STORY** individual.
 
 ### B. Ejecución y Cierre
 
-* **DEV:** `*DEVELOP #STORY` -> El desarrollador ejecuta la lógica basada en el PRD y la Arquitectura fragmentada.
+* **DEV:** `*DEVELOP-STORY #STORY` -> El desarrollador ejecuta la lógica basada en el PRD y la Arquitectura fragmentada.
 * **QA:** `*REVIEW #STORY` -> Revisión de calidad para asegurar que lo desarrollado cumple con el diseño de pruebas previo.
 * **Manual:** Editar el estado de la historia a **DONE**.
 
